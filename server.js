@@ -1,6 +1,7 @@
+'use strict';
+
 //require and dependencies
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -10,7 +11,7 @@ const mongoose = require('mongoose');
 // bring in a scheme if I want to interact with that model
 const Book = require('./models/book.js');
 
-// connect Mongoose to ouur MongoDB
+// connect Mongoose to our MongoDB
 mongoose.connect(process.env.DB_URL);
 
 // add validation to confirm we are wired up to our mongo DB
@@ -19,7 +20,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
   console.log('Mongoose is connected');
 });
-
 
 // USE
 // implement express
@@ -37,18 +37,16 @@ app.get('/', (request, response) => {
 });
 
 // ROUTES
-app.get('/books', async (request, response) => {
+app.get('/books', getBooks)
 
-  const filterQuery = {};
-
-  if (request.query.location) {
-    filterQuery.location = request.query.location;
+async function getBooks(req, res, next) {
+  try {
+    let results = await Book.find();
+    res.status(200).send(results);
+  } catch (error) {
+    next(error);
   }
-
-  const books = await Book.find(filterQuery);
-
-  response.send(books);
-});
+}
 
 app.listen(PORT, () => console.log('Listening on PORT', PORT));
 
