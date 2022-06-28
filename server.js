@@ -5,6 +5,13 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+// USE
+// implement express
+const app = express();
+
+// middleware
+app.use(cors());
+
 // bring in mongoose
 const mongoose = require('mongoose');
 
@@ -21,12 +28,6 @@ db.once('open', function () {
   console.log('Mongoose is connected');
 });
 
-// USE
-// implement express
-const app = express();
-
-// middleware
-app.use(cors());
 
 // define PORT validate env is working
 const PORT = process.env.PORT || 3008;
@@ -47,8 +48,6 @@ async function getBooks(req, res, next) {
     next(error);
   }
 }
-
-app.listen(PORT, () => console.log('Listening on PORT', PORT));
 
 //wrong get
 app.get('*', (request, response) => {
