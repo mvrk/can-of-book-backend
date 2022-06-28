@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-const Cat = require('./models/cat');
+const Book = require('./models/book');
 
 const PORT = process.env.PORT;
 
@@ -12,7 +12,7 @@ app.use(cors());
 
 mongoose.connect(process.env.DATABASE_URL);
 
-app.get('/cats', async (request, response) => {
+app.get('/books', async (request, response) => {
 
   const filterQuery = {};
 
@@ -20,9 +20,9 @@ app.get('/cats', async (request, response) => {
     filterQuery.location = request.query.location;
   }
 
-  const cats = await Cat.find(filterQuery);
+  const books = await Book.find(filterQuery);
 
-  response.send(cats);
+  response.send(books);
 });
 
 app.listen(PORT, () => console.log('Listening on PORT', PORT));

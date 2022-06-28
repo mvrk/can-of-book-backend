@@ -3,30 +3,44 @@ require('dotenv').config();
 
 mongoose.connect(process.env.DATABASE_URL);
 
-const Cat = require('./models/cat');
+const Book = require('./models/book');
 
 async function seed() {
   // seed the database with some cats, so I can retrieve them
-  const myCat = new Cat({
-    name: 'Jimmy John',
-    color: 'orange',
-    hasClaws: false,
-    location: 'Seattle',
+  const myBook = new Book({
+    title: 'Zero to One',
+    description: 'Notes on startups, or how to build the future',
+    status: false
   });
-  myCat.save(function (err) {
+  myBook.save(function (err) {
     if (err) console.error(err);
-    else console.log('saved Jimmy John');
+    // else console.log('Zero to One');
   });
 
   // alternately...
-  await Cat.create({
-    name: 'Jersey  Mike',
-    color: 'calico',
-    hasClaws: true,
-    location: 'Paris'
+  await Book.create({
+    title: 'The 10X Rule',
+    description: 'The only difference between success and failure',
+    status: true
   });
 
-  console.log('saved Jersey Mike');
+  // console.log('The 10X Rule');
+
+  await Book.create({
+    title: 'Advanced Linux Networking',
+    description: 'This book introduces basic network configuration of local network servers, internet servers, network security and router functions.',
+    status: true
+  });
+
+  // console.log('Advanced Linux Networking');
+
+  await Book.create({
+    title: 'Eloquent JavaScript',
+    description: 'A modern introduction to programming',
+    status: true
+  });
+
+  // console.log('Eloquent JavaScript');
 
   mongoose.disconnect();
 }
