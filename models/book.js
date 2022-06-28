@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 // extract the Schema property from the mongoose object----------
 const { Schema } = mongoose;
 
-const catSchema = new Schema({
+const bookSchema = new Schema({
   title: {type: String, required: true},
   description: {type: String, required: true},
   status: {type: Boolean, required: true}
@@ -16,7 +16,7 @@ const catSchema = new Schema({
 
 
 //define our model
-const Book = mongoose.model('Book', bookSchema);
+const BookModel = mongoose.model('Book', bookSchema);
 
-module.exports = Book;
+module.exports = BookModel;
 
