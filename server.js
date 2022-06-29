@@ -11,6 +11,7 @@ const app = express();
 
 // middleware
 app.use(cors());
+app.use(express.json());
 
 // bring in mongoose
 const mongoose = require('mongoose');
@@ -37,9 +38,12 @@ app.get('/', (request, response) => {
   response.status(200).send('Welcome!');
 });
 
-// ROUTES
+//call routes
 app.get('/books', getBooks)
+app.post('/books', postBooks)
+app.delete('/books/:id', deleteBooks)
 
+// ROUTES get books-----------------------------------------------------------
 async function getBooks(req, res, next) {
   try {
     let results = await Book.find();
@@ -49,6 +53,34 @@ async function getBooks(req, res, next) {
   }
 }
 
+// ROUTES post books-----------------------------------------------------------
+
+async function postBooks(req, res, next) {
+  try {
+    console.log(req);
+    let createdBook = await Book.create(req.body);
+
+    res.status(200).send(createdBook);
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+// ROUTES delete books-----------------------------------------------------------
+
+async function deleteBooks(req, res, next) {
+  let id = req.params.id;
+  console.log(id);
+  try {
+    await Book.findByIdAndDelete(id)
+    res.status(200).send('book deleted');
+  } catch (error) {
+    next(error);
+  }
+}
+//-------------------------------------------------
+
 //wrong get
 app.get('*', (request, response) => {
   response.status(404).send('Not availabe');
@@ -56,7 +88,7 @@ app.get('*', (request, response) => {
 
 // ERROR
 app.use((error, request, response, next) => {
-  res.status(500).send(error.message);
+  response.status(500).send(error.message);
 });
 
 // LISTEN
