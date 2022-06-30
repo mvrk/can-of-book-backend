@@ -38,10 +38,11 @@ app.get('/', (request, response) => {
   response.status(200).send('Welcome!');
 });
 
-//call routes
+//call routes functions
 app.get('/books', getBooks)
 app.post('/books', postBooks)
 app.delete('/books/:id', deleteBooks)
+app.put('/cats/:id', putBooks);
 
 // ROUTES get books-----------------------------------------------------------
 async function getBooks(req, res, next) {
@@ -79,6 +80,21 @@ async function deleteBooks(req, res, next) {
     next(error);
   }
 }
+
+// ROUTES update books-----------------------------------------------------------
+
+async function putBooks(req, res, next) {
+  let id = req.params.id;
+  console.log(id);
+  try {
+    let data = req.body;
+    await Book.findByIdAndUpdate(id, data, {new: true, overwrite: true});
+    res.status(200).send('updatedBook');
+  } catch (error) {
+    next(error);
+  }
+}
+
 //-------------------------------------------------
 
 //wrong get
